@@ -13,6 +13,7 @@ export default class ContactDetails extends React.Component {
         this.handleToggle= this.handleToggle.bind(this);
         this.handleChange= this.handleChange.bind(this);
         this.handleEdit= this.handleEdit.bind(this);
+        this.handleKeypress= this.handleKeypress.bind(this);
     }
    
     handleToggle(){
@@ -37,6 +38,11 @@ export default class ContactDetails extends React.Component {
     }
     handleEdit(){
         this.props.onEdit(this.state.name, this.state.phone)
+    }
+    handleKeypress(e){
+        if(e.charCode===13){
+            this.handleToggle();
+        }
     }
     render() {
         
@@ -67,6 +73,7 @@ export default class ContactDetails extends React.Component {
                         placeholder="phone"
                         value={this.state.phone}
                         onChange={this.handleChange}
+                        onKeyPress={this.handleKeypress}
                         />
                 </p>
             </div>
