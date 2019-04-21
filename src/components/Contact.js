@@ -32,6 +32,29 @@ export default class Contact extends React.Component {
         this.handleRemove=this.handleRemove.bind(this);
         this.handleEdit=this.handleEdit.bind(this);
     }
+    
+    componentWillMount(){
+    // before rendering. This will be executed first.
+        const contactData =localStorage.contactData;
+        const nextId = localStorage.nextId;
+        if(contactData){
+            this.setState({
+                contactData: JSON.parse(contactData),
+                nextId
+            })
+        }
+    }
+    componentDidUpdate(prevProps, prevState){
+    // This is executed everytime the components are updated. If the props and states are the same with previous version, it will save it and use it from localStorage.
+        if(JSON.stringify(prevState.contactData) != JSON.stringify(this.state.contactData)){
+            localStorage.contactData =JSON.stringify(this.state.contactData);
+        }
+
+        if(prevState.nextId !== this.state.nextId){
+            localStorage.nextId = this.state.nextId;
+        }
+    }
+
     handleChange(e) {
         this.setState({
             keyword: e.target.value
@@ -104,7 +127,7 @@ export default class Contact extends React.Component {
                     </input>
 
                 <div>{mapToComponents(this.state.contactData)}</div>
-                <ContactDetails isSelected={this.state.selectedKey !=-1}
+                <ContactDetails isSelected={this.state.selectedKey != -1}
                                 contact={this.state.contactData[this.state.selectedKey]}
                                 onRemove={this.handleRemove}//onRemove=> props
                                 onEdit={this.handleEdit}
